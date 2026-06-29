@@ -69,7 +69,7 @@
       "properties": {
         "osi:version": {
           "type": "string",
-          "description": "Version of the OSI specification the linked semantic model and column annotations conform to."
+          "description": "Version of the OSI specification the linked semantic model and the stable annotations (osi:metrics and the osi:role values dimension, measure, time) conform to. This does NOT cover osi:spatial, which is an experimental prototype of OSI Discussion 114 and is not part of any finalized OSI release."
         },
         "osi:semantic_model_href": {
           "type": "string",

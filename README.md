@@ -12,8 +12,14 @@ This extension links a STAC Collection or Item to an [OSI](https://github.com/op
 semantic role of tabular columns. It lets a geospatial or tabular catalog declare the business meaning of its data,
 metrics, dimensions, and relationships, so that BI tools and AI agents can consume it through a vendor-neutral standard.
 
-> **Work in Progress.** This is an early Proposal. OSI itself has no spatial primitives yet, so the spatial fields here run
-> ahead of the upstream standard. Field names, the schema, and the extension URL may change before any stable release.
+> **Work in Progress.** This is an early Proposal. The schema and the extension URL may change before any stable release.
+
+## Stability
+
+This extension has two surfaces with different stability guarantees:
+
+- **Stable surface** — the link to an OSI semantic model, `osi:metrics`, and the `osi:role` values `dimension`, `measure`, and `time`. These map onto constructs that exist in finalized OSI, and `osi:version` records which OSI release they conform to.
+- **Experimental surface** — `osi:spatial`. OSI has no spatial primitives yet, so this descriptor runs ahead of the upstream standard as a prototype of [OSI Discussion 114](https://github.com/open-semantic-interchange/OSI/discussions/114). It is **not** covered by `osi:version` and is subject to breaking change until OSI adopts spatial primitives. We are engaging upstream on #114 directly rather than freezing these field names.
 
 ## Design intent
 
@@ -33,7 +39,7 @@ These fields apply at the Collection level and in Item `properties`.
 
 | Field Name | Type | Description |
 | ----------------------- | --------- | ----------- |
-| osi:version | string | **REQUIRED** when the extension is used. Version of the OSI specification the linked model and annotations conform to. |
+| osi:version | string | **REQUIRED** when the extension is used. Version of the OSI specification that the linked model and the stable annotations (`osi:metrics` and the `osi:role` values `dimension`, `measure`, `time`) conform to. It does **not** cover `osi:spatial`, which is experimental and not part of any finalized OSI release. See [Stability](#stability). |
 | osi:semantic_model_href | string | Pointer to the OSI semantic model document, used when the model is not attached as an asset. |
 | osi:metrics | \[object] | Denormalized summary of the model's metrics, surfaced for discovery. Each entry has a `name` and an optional `description`. |
 | table:columns | \[object] | Column definitions from the STAC Table extension, optionally annotated with the OSI fields below. |

@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json#",
+  "title": "STAC OSI Extension",
+  "description": "Links STAC Collections and Items to an OSI (Open Semantic Interchange / Apache Ossie) semantic model and annotates the semantic role of tabular columns.",
+  "oneOf": [
+    {
+      "$comment": "This is the schema for STAC Collections.",
+      "type": "object",
+      "allOf": [
+        {
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "const": "Collection"
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/stac_extensions"
+        },
+        {
+          "required": ["osi:version"],
+          "$ref": "#/definitions/fields"
+        }
+      ]
+    },
+    {
+      "$comment": "This is the schema for STAC Items.",
+      "type": "object",
+      "allOf": [
+        {
+          "required": ["type", "properties"],
+          "properties": {
+            "type": {
+              "const": "Feature"
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/stac_extensions"
+        },
+        {
+          "properties": {
+            "properties": {
+              "required": ["osi:version"],
+              "$ref": "#/definitions/fields"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "definitions": {
+    "stac_extensions": {
+      "type": "object",
+      "required": ["stac_extensions"],
+      "properties": {
+        "stac_extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json"
+          }
+        }
+      }
+    },
+    "fields": {
+      "type": "object",
+      "properties": {
+        "osi:version": {
+          "type": "string",
+          "description": "Version of the OSI specification the linked semantic model and column annotations conform to."
+        },
+        "osi:semantic_model_href": {
+          "type": "string",
+          "format": "iri-reference",
+          "description": "Optional pointer to the OSI semantic model document when it is not attached as an asset."
+        },
+        "osi:metrics": {
+          "type": "array",
+          "description": "Denormalized summary of the metrics defined in the linked semantic model, surfaced for discovery and search.",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Metric identifier as defined in the OSI semantic model."
+              },
+              "description": {
+                "type": "string",
+                "description": "Human-readable description of what the metric measures."
+              }
+            }
+          }
+        },
+        "table:columns": {
+          "type": "array",
+          "description": "Column definitions from the STAC Table extension, optionally annotated with OSI semantic roles.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "osi:role": {
+                "type": "string",
+                "enum": ["dimension", "measure", "time", "spatial"],
+                "description": "Semantic role of the column in the OSI model. A dimension groups or filters, a measure is aggregated, time is a temporal dimension, spatial is a geometry or spatial index column."
+              },
+              "osi:semantic_type": {
+                "type": "string",
+                "description": "Optional richer semantic type for the column, for example currency, identifier, or email."
+              },
+              "osi:spatial": {
+                "type": "object",
+                "description": "Spatial descriptor for a column with osi:role spatial. Prototype of the OSI spatial dimension descriptor (OSI Discussion 114).",
+                "properties": {
+                  "geometry_type": {
+                    "type": "string",
+                    "enum": ["point", "line", "polygon", "multipolygon", "geometry", "geography", "raster"],
+                    "description": "Geometry kind, following OGC and ISO usage where geometry is planar and geography is spherical."
+                  },
+                  "srid": {
+                    "type": "integer",
+                    "description": "EPSG spatial reference identifier, for example 4326."
+                  },
+                  "spatial_index": {
+                    "type": "object",
+                    "description": "Discrete global grid index carried by the column, when applicable.",
+                    "required": ["system"],
+                    "properties": {
+                      "system": {
+                        "type": "string",
+                        "enum": ["h3", "quadbin", "s2", "geohash"],
+                        "description": "Spatial index system."
+                      },
+                      "resolution": {
+                        "type": "integer",
+                        "description": "Index resolution or level."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

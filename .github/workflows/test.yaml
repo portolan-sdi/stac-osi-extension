@@ -1,13 +1,17 @@
-name: Check Markdown and Examples
-on: [push, pull_request]
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
       - uses: actions/checkout@v4
-      - run: |
-          npm install
-          npm test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - run: npm install
+      - run: npm test

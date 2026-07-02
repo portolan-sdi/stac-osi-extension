@@ -21,7 +21,6 @@
       "name": "h3",
       "type": "string",
       "description": "H3 cell index at resolution 8.",
-      "osi:role": "spatial",
       "osi:spatial": {
         "geometry_type": "polygon",
         "srid": 4326,
@@ -35,7 +34,6 @@
       "name": "geom",
       "type": "binary",
       "description": "Cell boundary geometry, WKB encoded.",
-      "osi:role": "spatial",
       "osi:spatial": {
         "geometry_type": "polygon",
         "srid": 4326
@@ -44,8 +42,7 @@
     {
       "name": "population",
       "type": "int64",
-      "description": "Resident population count for the cell.",
-      "osi:role": "measure"
+      "description": "Resident population count for the cell."
     }
   ],
   "extent": {

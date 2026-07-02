@@ -12,8 +12,8 @@ This extension links a STAC Collection or Item to an [OSI](https://github.com/op
 semantic role of tabular columns. It lets a geospatial or tabular catalog declare the business meaning of its data,
 metrics, dimensions, and relationships, so that BI tools and AI agents can consume it through a vendor-neutral standard.
 
-> **Work in Progress.** This is an early Proposal. OSI itself has no spatial primitives yet, so the spatial fields here run
-> ahead of the upstream standard. Field names, the schema, and the extension URL may change before any stable release.
+> **Work in Progress.** This is an early Proposal. `osi:spatial` is explicitly experimental, see below. Field names,
+> the schema, and the extension URL may change before any stable release.
 
 ## Design intent
 
@@ -40,19 +40,20 @@ These fields apply at the Collection level and in Item `properties`.
 
 ### Column annotations
 
-These optional fields annotate each object inside `table:columns`. They sit alongside the Table extension's own
-`name`, `type`, and `description`.
+One optional field annotates objects inside `table:columns`. It sits alongside the Table extension's own
+`name`, `type`, and `description`. Semantic role and richer typing are not covered here, they are derivable
+from the linked OSI semantic model and have no STAC search consumer, so this extension does not duplicate them.
 
 | Field Name | Type | Description |
-| ----------------- | ------ | ----------- |
-| osi:role | string | Semantic role of the column. One of `dimension`, `measure`, `time`, `spatial`. |
-| osi:semantic_type | string | Optional richer semantic type, for example `currency`, `identifier`, or `email`. |
-| osi:spatial | object | Spatial descriptor for a column whose role is `spatial`. See below. |
+| ----------- | ------ | ----------- |
+| osi:spatial | object | **Experimental.** Spatial descriptor for a column. See below. |
 
 ### osi:spatial object
 
-A prototype of the OSI spatial dimension descriptor proposed in
-[OSI Discussion 114](https://github.com/open-semantic-interchange/OSI/discussions/114).
+**Experimental.** A prototype of the OSI spatial dimension descriptor proposed in
+[OSI Discussion 114](https://github.com/open-semantic-interchange/OSI/discussions/114). OSI has no spatial
+primitives yet, so this field runs ahead of the upstream standard and may change once OSI adopts its own
+descriptor. Presence of `osi:spatial` on a column is itself the spatial signal, no separate role field is needed.
 
 | Field Name | Type | Description |
 | ------------- | ------ | ----------- |
@@ -99,7 +100,7 @@ relation instead.
 | ------------------------- | ----------------------------------------- | ----------- |
 | `semantic_model` | Collection, or Catalog for multi-collection models | One model per collection is the common case. |
 | `dataset.source` | The GeoParquet or Parquet data asset href | Portolan assets become OSI sources. |
-| `dataset.fields` (dimensions) | `table:columns` plus `osi:role` | Column typing is referenced, the role is added. |
+| `dataset.fields` (dimensions) | `table:columns` | Column typing is referenced, not duplicated. Semantic role stays in the OSI model. |
 | `metrics` | The attached OSI document, plus `osi:metrics` inline | No STAC analog, this is the new content. |
 | `relationships` | The attached OSI document | Cross-collection joins, no STAC analog. |
 

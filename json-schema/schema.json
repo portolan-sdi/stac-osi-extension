@@ -100,18 +100,10 @@
           "items": {
             "type": "object",
             "properties": {
-              "osi:role": {
-                "type": "string",
-                "enum": ["dimension", "measure", "time", "spatial"],
-                "description": "Semantic role of the column in the OSI model. A dimension groups or filters, a measure is aggregated, time is a temporal dimension, spatial is a geometry or spatial index column."
-              },
-              "osi:semantic_type": {
-                "type": "string",
-                "description": "Optional richer semantic type for the column, for example currency, identifier, or email."
-              },
               "osi:spatial": {
+                "$comment": "Experimental. A prototype of the OSI spatial dimension descriptor proposed in OSI Discussion 114 (https://github.com/open-semantic-interchange/OSI/discussions/114). OSI has no spatial primitives yet, so this field runs ahead of the upstream standard and may change or be replaced once OSI adopts its own descriptor.",
                 "type": "object",
-                "description": "Spatial descriptor for a column with osi:role spatial. Prototype of the OSI spatial dimension descriptor (OSI Discussion 114).",
+                "description": "Spatial descriptor for a column. Presence of this field is itself the spatial signal, no separate role field is needed.",
                 "properties": {
                   "geometry_type": {
                     "type": "string",

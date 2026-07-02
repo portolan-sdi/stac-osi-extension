@@ -21,20 +21,17 @@
     {
       "name": "geo",
       "type": "string",
-      "description": "Country code, ISO-3166-1 alpha-2.",
-      "osi:role": "dimension"
+      "description": "Country code, ISO-3166-1 alpha-2."
     },
     {
       "name": "period",
       "type": "string",
-      "description": "Reporting half-year, for example 2024-S1.",
-      "osi:role": "time"
+      "description": "Reporting half-year, for example 2024-S1."
     },
     {
       "name": "price_eur_kwh",
       "type": "double",
-      "description": "Industrial electricity price in EUR per kWh.",
-      "osi:role": "measure"
+      "description": "Industrial electricity price in EUR per kWh."
     }
   ],
   "extent": {

@@ -3,7 +3,7 @@
   "stac_version": "1.0.0",
   "stac_extensions": [
     "https://stac-extensions.github.io/table/v1.2.0/schema.json",
-    "https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json"
+    "https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json"
   ],
   "id": "eurostat-electricity-prices",
   "title": "Industrial electricity prices by country",

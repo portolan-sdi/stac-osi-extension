@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json#",
+  "$id": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json#",
   "title": "STAC OSI Extension",
   "description": "Links STAC Collections and Items to an OSI (Open Semantic Interchange / Apache Ossie) semantic model and surfaces a searchable summary of its metrics.",
   "oneOf": [
@@ -59,7 +59,7 @@
         "stac_extensions": {
           "type": "array",
           "contains": {
-            "const": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json"
+            "const": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json"
           }
         }
       }

@@ -1,7 +1,7 @@
 # STAC OSI Extension
 
 - **Title:** OSI
-- **Identifier:** <https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json>
+- **Identifier:** <https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json>
 - **Field Name Prefix:** osi
 - **Scope:** Collection, Item
 - **Extension Maturity Classification:** Proposal

@@ -1,13 +1,13 @@
 {
   "name": "stac-osi-extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "STAC OSI Extension — links STAC objects to an OSI (Apache Ossie) semantic model and annotates column semantic roles",
   "scripts": {
     "test": "npm run check-markdown && npm run check-schema && npm run check-examples",
     "check-markdown": "remark . --frail",
     "check-schema": "ajv compile -s json-schema/schema.json --spec=draft7 -c ajv-formats --strict=false",
-    "check-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json=./json-schema/schema.json",
-    "format-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.1.0/schema.json=./json-schema/schema.json --format"
+    "check-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json=./json-schema/schema.json",
+    "format-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json=./json-schema/schema.json --format"
   },
   "devDependencies": {
     "ajv-cli": "^5.0.0",

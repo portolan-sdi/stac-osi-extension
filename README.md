@@ -8,8 +8,8 @@
 - **Owner:** [Portolan SDI](https://github.com/portolan-sdi)
 
 This extension links a STAC Collection or Item to an [OSI](https://github.com/open-semantic-interchange/OSI)
-(Open Semantic Interchange, incubating at the Apache Software Foundation as Ossie) semantic model, and annotates the
-semantic role of tabular columns. It lets a geospatial or tabular catalog declare the business meaning of its data,
+(Open Semantic Interchange, incubating at the Apache Software Foundation as Ossie) semantic model, and surfaces a
+searchable summary of the model's metrics. It lets a geospatial or tabular catalog declare the business meaning of its data,
 metrics, dimensions, and relationships, so that BI tools and AI agents can consume it through a vendor-neutral standard.
 
 > **Work in Progress.** This is an early Proposal. `osi:spatial` is explicitly experimental, see below. Field names,
@@ -25,7 +25,7 @@ because existing standards already cover those and should be referenced instead 
 - Business meaning, metrics, dimensions, and relationships live in the linked OSI semantic model.
 
 The only genuinely new surface this extension adds is the link from a STAC object to an OSI model, a small set of
-searchable summary fields, and per-column semantic role annotations.
+searchable summary fields, and an experimental per-column spatial descriptor.
 
 ## Fields
 
@@ -33,7 +33,7 @@ These fields apply at the Collection level and in Item `properties`.
 
 | Field Name | Type | Description |
 | ----------------------- | --------- | ----------- |
-| osi:version | string | **REQUIRED** when the extension is used. Version of the OSI specification the linked model and annotations conform to. |
+| osi:version | string | **REQUIRED** when the extension is used. Version of the OSI specification the linked model and the `osi:metrics` summary conform to. Does not cover the experimental `osi:spatial` field. |
 | osi:semantic_model_href | string | Pointer to the OSI semantic model document, used when the model is not attached as an asset. |
 | osi:metrics | \[object] | Denormalized summary of the model's metrics, surfaced for discovery. Each entry has a `name` and an optional `description`. |
 | table:columns | \[object] | Column definitions from the STAC Table extension, optionally annotated with the OSI fields below. |
@@ -107,7 +107,7 @@ relation instead.
 ## Relation to other extensions
 
 - [STAC Table extension](https://github.com/stac-extensions/table) provides the `table:columns` schema this
-  extension annotates. The Table extension is a dependency of any object that uses OSI column roles.
+  extension annotates. The Table extension is a dependency of any object that uses the `osi:spatial` column descriptor.
 - [STAC Iceberg extension](https://github.com/portolan-sdi/stac-iceberg-extension) is the natural physical anchor.
   When a collection is Iceberg backed, the OSI dataset source and the Iceberg table identity line up.
 

@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `osi-semantic-model` link relation and the `osi` / `semantic-model` asset roles.
 - Tabular and spatial example collections.
 
+### Changed
+
+- Scoped `osi:version` to the stable surface. It now covers the linked semantic model and the `osi:metrics`
+  summary only, and explicitly does not cover the experimental `osi:spatial` descriptor.
+
 ### Removed
 
 - Dropped the `osi:role` and `osi:semantic_type` column annotations. Both are derivable from the linked OSI

@@ -29,12 +29,13 @@ jobs:
 
           # Try to fetch existing versions manifest, default to empty array
           if curl -sfL https://portolan-sdi.github.io/stac-osi-extension/versions.json -o /tmp/versions.json 2>/dev/null; then
-            # Download each existing version's schema to preserve them
+            # Download each existing version's schema to preserve them.
+            # A download failure fails the release instead of silently dropping a published version.
             for ver in $(jq -r '.[]' /tmp/versions.json 2>/dev/null); do
               if [ "$ver" != "$VERSION" ]; then
                 mkdir -p "_site/${ver}"
                 curl -sfL "https://portolan-sdi.github.io/stac-osi-extension/${ver}/schema.json" \
-                  -o "_site/${ver}/schema.json" 2>/dev/null || true
+                  -o "_site/${ver}/schema.json"
               fi
             done
             # Add new version to manifest

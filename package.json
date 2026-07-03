@@ -1,17 +1,34 @@
 {
   "name": "stac-osi-extension",
-  "version": "0.1.1",
-  "description": "STAC OSI Extension — links STAC objects to an OSI (Apache Ossie) semantic model and annotates column semantic roles",
+  "version": "0.2.0",
+  "description": "STAC OSI Extension. Links STAC objects to an OSI (Apache Ossie) semantic model, surfaces a searchable summary of its metrics, and prototypes an experimental spatial column descriptor.",
   "scripts": {
-    "test": "npm run check-markdown && npm run check-schema && npm run check-examples",
+    "test": "npm run check-markdown && npm run check-format && npm run check-schema && npm run check-examples && npm run check-osi-model",
     "check-markdown": "remark . --frail",
+    "check-format": "biome format .",
+    "format": "biome format --write .",
     "check-schema": "ajv compile -s json-schema/schema.json --spec=draft7 -c ajv-formats --strict=false",
-    "check-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json=./json-schema/schema.json",
-    "format-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json=./json-schema/schema.json --format"
+    "check-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json examples/collection-nls-buildings.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.2.0/schema.json=./json-schema/schema.json",
+    "check-osi-model": "node scripts/check-osi-model.mjs",
+    "format-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json examples/collection-nls-buildings.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.2.0/schema.json=./json-schema/schema.json --format",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.json": [
+      "biome format --write"
+    ],
+    "*.md": [
+      "remark --frail --quiet"
+    ]
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "ajv": "^8.17.1",
     "ajv-cli": "^5.0.0",
     "ajv-formats": "^3.0.1",
+    "husky": "^9.1.7",
+    "js-yaml": "^4.1.0",
+    "lint-staged": "^16.1.0",
     "stac-node-validator": "^1.3.2",
     "remark-cli": "^12.0.0",
     "remark-lint": "^10.0.0",

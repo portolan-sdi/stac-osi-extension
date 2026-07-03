@@ -3,14 +3,13 @@
   "stac_version": "1.0.0",
   "stac_extensions": [
     "https://stac-extensions.github.io/table/v1.2.0/schema.json",
-    "https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json"
+    "https://portolan-sdi.github.io/stac-osi-extension/v0.2.0/schema.json"
   ],
   "id": "eurostat-electricity-prices",
   "title": "Industrial electricity prices by country",
   "description": "Half-yearly industrial electricity prices in EUR per kWh by European country. A non-geospatial tabular collection carrying an OSI semantic model.",
   "license": "CC-BY-4.0",
-  "portolan:geospatial": false,
-  "osi:version": "1.0.0",
+  "osi:version": "0.2.0.dev0",
   "osi:metrics": [
     {
       "name": "avg_price_eur_kwh",

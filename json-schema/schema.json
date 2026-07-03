@@ -1,11 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json#",
+  "$id": "https://portolan-sdi.github.io/stac-osi-extension/v0.2.0/schema.json#",
   "title": "STAC OSI Extension",
   "description": "Links STAC Collections and Items to an OSI (Open Semantic Interchange / Apache Ossie) semantic model and surfaces a searchable summary of its metrics.",
   "oneOf": [
     {
-      "$comment": "This is the schema for STAC Collections.",
+      "$comment": "This is the schema for STAC Collections. The required keyword is kept in its own allOf entry because draft-07 ignores siblings of $ref.",
       "type": "object",
       "allOf": [
         {
@@ -20,13 +20,15 @@
           "$ref": "#/definitions/stac_extensions"
         },
         {
-          "required": ["osi:version"],
+          "required": ["osi:version"]
+        },
+        {
           "$ref": "#/definitions/fields"
         }
       ]
     },
     {
-      "$comment": "This is the schema for STAC Items.",
+      "$comment": "This is the schema for STAC Items. The required keyword is kept in its own allOf entry because draft-07 ignores siblings of $ref.",
       "type": "object",
       "allOf": [
         {
@@ -43,8 +45,14 @@
         {
           "properties": {
             "properties": {
-              "required": ["osi:version"],
-              "$ref": "#/definitions/fields"
+              "allOf": [
+                {
+                  "required": ["osi:version"]
+                },
+                {
+                  "$ref": "#/definitions/fields"
+                }
+              ]
             }
           }
         }
@@ -59,7 +67,7 @@
         "stac_extensions": {
           "type": "array",
           "contains": {
-            "const": "https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json"
+            "const": "https://portolan-sdi.github.io/stac-osi-extension/v0.2.0/schema.json"
           }
         }
       }
@@ -69,11 +77,12 @@
       "properties": {
         "osi:version": {
           "type": "string",
+          "minLength": 1,
           "description": "Version of the OSI specification the linked semantic model and the osi:metrics summary conform to. Does not cover the experimental osi:spatial descriptor, which prototypes OSI Discussion 114 and is not part of any finalized OSI release."
         },
         "osi:semantic_model_href": {
           "type": "string",
-          "format": "iri-reference",
+          "format": "uri-reference",
           "description": "Optional pointer to the OSI semantic model document when it is not attached as an asset."
         },
         "osi:metrics": {
@@ -85,13 +94,15 @@
             "properties": {
               "name": {
                 "type": "string",
+                "minLength": 1,
                 "description": "Metric identifier as defined in the OSI semantic model."
               },
               "description": {
                 "type": "string",
                 "description": "Human-readable description of what the metric measures."
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "table:columns": {
@@ -128,14 +139,24 @@
                         "type": "integer",
                         "description": "Index resolution or level."
                       }
-                    }
+                    },
+                    "additionalProperties": false
                   }
-                }
+                },
+                "additionalProperties": false
               }
-            }
+            },
+            "patternProperties": {
+              "^(?!osi:)": {}
+            },
+            "additionalProperties": false
           }
         }
-      }
+      },
+      "patternProperties": {
+        "^(?!osi:)": {}
+      },
+      "additionalProperties": false
     }
   }
 }

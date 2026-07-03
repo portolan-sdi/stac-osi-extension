@@ -3,13 +3,13 @@
   "stac_version": "1.0.0",
   "stac_extensions": [
     "https://stac-extensions.github.io/table/v1.2.0/schema.json",
-    "https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json"
+    "https://portolan-sdi.github.io/stac-osi-extension/v0.2.0/schema.json"
   ],
   "id": "population-by-h3",
   "title": "Population by H3 cell",
   "description": "Gridded population counts keyed by H3 cell, demonstrating the OSI spatial column descriptor on a geospatial collection.",
   "license": "CC-BY-4.0",
-  "osi:version": "1.0.0",
+  "osi:version": "0.2.0.dev0",
   "osi:metrics": [
     {
       "name": "total_population",

@@ -1,0 +1,192 @@
+{
+  "type": "Collection",
+  "stac_version": "1.0.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/table/v1.2.0/schema.json",
+    "https://portolan-sdi.github.io/stac-osi-extension/v0.2.0/schema.json"
+  ],
+  "id": "nls-building-overviews",
+  "title": "NLS Finland building footprints with geometry overviews",
+  "description": "Building footprints from the National Land Survey of Finland topographic database (Maastotietokanta, rakennus feature class), published as a cloud-native GeoParquet with precomputed geometry overviews. 5.65 million rows in ETRS89 / TM35FIN (EPSG:3067), one row per building per overview band. A real dataset carrying a full OSI semantic model, see nls-buildings.osi.yaml next to this file.",
+  "license": "CC-BY-4.0",
+  "osi:version": "0.2.0.dev0",
+  "osi:semantic_model_href": "./nls-buildings.osi.yaml",
+  "osi:metrics": [
+    {
+      "name": "building_count",
+      "description": "Number of distinct buildings, counted once regardless of overview band."
+    },
+    {
+      "name": "avg_floor_count",
+      "description": "Average floor count code across buildings at band 0."
+    },
+    {
+      "name": "total_footprint_area_m2",
+      "description": "Total building footprint area in square meters, computed on the original band 0 geometries in EPSG:3067."
+    }
+  ],
+  "table:columns": [
+    {
+      "name": "OGC_FID",
+      "type": "int64",
+      "description": "Sequential feature identifier assigned during conversion."
+    },
+    {
+      "name": "mtk_id",
+      "type": "int64",
+      "description": "Persistent feature identifier in the NLS topographic database."
+    },
+    {
+      "name": "sijaintitarkkuus",
+      "type": "int32",
+      "description": "Planar location accuracy in millimeters."
+    },
+    {
+      "name": "aineistolahde",
+      "type": "int32",
+      "description": "NLS source code for the capture method."
+    },
+    {
+      "name": "alkupvm",
+      "type": "date32",
+      "description": "Date the feature version became valid."
+    },
+    {
+      "name": "kohderyhma",
+      "type": "int32",
+      "description": "NLS feature group code, 75 for buildings."
+    },
+    {
+      "name": "kohdeluokka",
+      "type": "int32",
+      "description": "NLS feature class code from the Maastotietokanta catalogue."
+    },
+    {
+      "name": "korkeustarkkuus",
+      "type": "int32",
+      "description": "Elevation accuracy code."
+    },
+    {
+      "name": "kayttotarkoitus",
+      "type": "int32",
+      "description": "Building usage purpose code."
+    },
+    {
+      "name": "kerrosluku",
+      "type": "int32",
+      "description": "Floor count code."
+    },
+    {
+      "name": "pohjankorkeus",
+      "type": "int32",
+      "description": "Elevation of the building base."
+    },
+    {
+      "name": "korkeusarvo",
+      "type": "string",
+      "description": "Building height value when recorded."
+    },
+    {
+      "name": "sijainti_piste",
+      "type": "string",
+      "description": "Building reference point as a GeoJSON string in EPSG:3067.",
+      "osi:spatial": {
+        "geometry_type": "point",
+        "srid": 3067
+      }
+    },
+    {
+      "name": "xmin",
+      "type": "double",
+      "description": "Minimum easting of the feature bounding box in EPSG:3067."
+    },
+    {
+      "name": "ymin",
+      "type": "double",
+      "description": "Minimum northing of the feature bounding box in EPSG:3067."
+    },
+    {
+      "name": "xmax",
+      "type": "double",
+      "description": "Maximum easting of the feature bounding box in EPSG:3067."
+    },
+    {
+      "name": "ymax",
+      "type": "double",
+      "description": "Maximum northing of the feature bounding box in EPSG:3067."
+    },
+    {
+      "name": "geometry",
+      "type": "binary",
+      "description": "Building footprint polygon, WKB encoded.",
+      "osi:spatial": {
+        "geometry_type": "polygon",
+        "srid": 3067
+      }
+    },
+    {
+      "name": "bbox",
+      "type": "struct<xmin: double, ymin: double, xmax: double, ymax: double>",
+      "description": "Per-feature bounding box struct from the GeoParquet covering convention."
+    },
+    {
+      "name": "band",
+      "type": "int16",
+      "description": "Overview level, 0 is the original geometry and 1 and 2 are simplified overviews."
+    },
+    {
+      "name": "geom_overview",
+      "type": "binary",
+      "description": "Simplified overview polygon for the band, WKB encoded.",
+      "osi:spatial": {
+        "geometry_type": "polygon",
+        "srid": 3067
+      }
+    }
+  ],
+  "extent": {
+    "spatial": {
+      "bbox": [[19.3, 59.57, 33.11, 70.0]]
+    },
+    "temporal": {
+      "interval": [["2025-03-24T00:00:00Z", "2026-06-26T00:00:00Z"]]
+    }
+  },
+  "assets": {
+    "data": {
+      "href": "https://data.source.coop/youssef-harby/geoparquet-overviews/nls_rakennus_overviews.parquet",
+      "type": "application/vnd.apache.parquet",
+      "roles": ["data"],
+      "title": "NLS building overviews, GeoParquet"
+    },
+    "semantic-model": {
+      "href": "./nls-buildings.osi.yaml",
+      "type": "application/yaml",
+      "roles": ["osi", "semantic-model"],
+      "title": "OSI semantic model, YAML"
+    },
+    "semantic-model-json": {
+      "href": "./nls-buildings.osi.json",
+      "type": "application/json",
+      "roles": ["osi", "semantic-model"],
+      "title": "OSI semantic model, JSON"
+    }
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "self",
+      "href": "./collection-nls-buildings.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "via",
+      "href": "https://source.coop/youssef-harby/geoparquet-overviews",
+      "title": "Source Cooperative repository"
+    }
+  ]
+}

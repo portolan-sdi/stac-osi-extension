@@ -1,0 +1,193 @@
+# OSI semantic model for the NLS Finland building overviews GeoParquet.
+# Conforms to the OSI core-spec draft (open-semantic-interchange/OSI, core-spec/osi-schema.json).
+#
+# Two parts of this document run ahead of the upstream OSI draft on purpose:
+# - `source` points at a file-backed GeoParquet URL. OSI today defines source as a
+#   database.schema.table reference or query, file-backed sources are tracked in OSI Issue 104.
+# - Spatial descriptors are carried as PORTOLAN custom_extensions until OSI adopts the
+#   spatial dimension type proposed in OSI Discussion 114.
+version: 0.2.0.dev0
+semantic_model:
+  - name: nls_building_overviews
+    description: >-
+      Building footprints from the National Land Survey of Finland topographic database
+      (Maastotietokanta, rakennus feature class), published as a cloud-native GeoParquet
+      with precomputed geometry overviews for multi-scale rendering. Coordinates are in
+      ETRS89 / TM35FIN (EPSG:3067). Each building appears once per overview band, band 0
+      carries the original geometry and bands 1 and 2 carry simplified overview geometries.
+    ai_context:
+      instructions: >-
+        Filter on band = 0 for analysis so that each building is counted once. Use the
+        overview bands only for rendering at small scales. Attribute codes follow the NLS
+        Maastotietokanta feature catalogue.
+      synonyms:
+        - buildings
+        - building footprints
+        - rakennukset
+    datasets:
+      - name: buildings
+        source: https://data.source.coop/youssef-harby/geoparquet-overviews/nls_rakennus_overviews.parquet
+        primary_key:
+          - OGC_FID
+        unique_keys:
+          - - mtk_id
+            - band
+        description: >-
+          One row per building per overview band, 5.65 million rows covering all of Finland.
+        fields:
+          - name: ogc_fid
+            description: Sequential feature identifier assigned during conversion.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: OGC_FID
+          - name: mtk_id
+            description: Persistent feature identifier in the NLS topographic database.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: mtk_id
+          - name: location_accuracy_mm
+            description: Planar location accuracy of the feature in millimeters (sijaintitarkkuus).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: sijaintitarkkuus
+          - name: data_source
+            description: NLS source code for the capture method (aineistolahde).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: aineistolahde
+          - name: valid_from
+            description: Date the feature version became valid (alkupvm).
+            dimension:
+              is_time: true
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: alkupvm
+          - name: feature_group
+            description: NLS feature group code, 75 for buildings (kohderyhma).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: kohderyhma
+          - name: feature_class
+            description: NLS feature class code from the Maastotietokanta catalogue (kohdeluokka).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: kohdeluokka
+          - name: elevation_accuracy
+            description: Elevation accuracy code (korkeustarkkuus).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: korkeustarkkuus
+          - name: usage_purpose
+            description: Building usage purpose code (kayttotarkoitus).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: kayttotarkoitus
+          - name: floor_count
+            description: Floor count code (kerrosluku).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: kerrosluku
+          - name: base_elevation
+            description: Elevation of the building base (pohjankorkeus).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: pohjankorkeus
+          - name: height_value
+            description: Building height value when recorded (korkeusarvo).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: korkeusarvo
+          - name: reference_point
+            description: Building reference point as a GeoJSON string in EPSG:3067 (sijainti_piste).
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: sijainti_piste
+            custom_extensions:
+              - vendor_name: PORTOLAN
+                data: '{"spatial": {"geometry_type": "point", "srid": 3067}}'
+          - name: xmin
+            description: Minimum easting of the feature bounding box in EPSG:3067.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: xmin
+          - name: ymin
+            description: Minimum northing of the feature bounding box in EPSG:3067.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: ymin
+          - name: xmax
+            description: Maximum easting of the feature bounding box in EPSG:3067.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: xmax
+          - name: ymax
+            description: Maximum northing of the feature bounding box in EPSG:3067.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: ymax
+          - name: geometry
+            description: Building footprint polygon in EPSG:3067, WKB encoded.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: geometry
+            custom_extensions:
+              - vendor_name: PORTOLAN
+                data: '{"spatial": {"geometry_type": "polygon", "srid": 3067}}'
+          - name: bbox
+            description: Per-feature bounding box struct from the GeoParquet covering convention.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: bbox
+          - name: band
+            description: Overview level, 0 is the original geometry and 1 and 2 are simplified overviews.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: band
+          - name: geom_overview
+            description: Simplified overview polygon for the band in EPSG:3067, WKB encoded.
+            expression:
+              dialects:
+                - dialect: ANSI_SQL
+                  expression: geom_overview
+            custom_extensions:
+              - vendor_name: PORTOLAN
+                data: '{"spatial": {"geometry_type": "polygon", "srid": 3067}}'
+    metrics:
+      - name: building_count
+        description: Number of distinct buildings, counted once regardless of overview band.
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: COUNT(DISTINCT mtk_id)
+      - name: avg_floor_count
+        description: Average floor count code across buildings at band 0.
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: AVG(kerrosluku) FILTER (WHERE band = 0)
+      - name: total_footprint_area_m2
+        description: Total building footprint area in square meters, computed on the original band 0 geometries in EPSG:3067.
+        expression:
+          dialects:
+            - dialect: ANSI_SQL
+              expression: SUM(ST_Area(geometry)) FILTER (WHERE band = 0)

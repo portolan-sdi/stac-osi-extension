@@ -10,9 +10,9 @@
     "format-examples": "stac-node-validator examples/collection.json examples/collection-spatial.json --schemaMap https://portolan-sdi.github.io/stac-osi-extension/v0.1.1/schema.json=./json-schema/schema.json --format"
   },
   "devDependencies": {
-    "ajv-cli": "^5.0.0",
-    "ajv-formats": "^3.0.1",
-    "stac-node-validator": "^1.3.2",
+    "ajv-cli": "5.0.0",
+    "ajv-formats": "3.0.1",
+    "stac-node-validator": "1.3.2",
     "remark-cli": "^12.0.0",
     "remark-lint": "^10.0.0",
     "remark-preset-lint-consistent": "^6.0.0",
